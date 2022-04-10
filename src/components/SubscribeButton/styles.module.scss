@@ -16,7 +16,10 @@
 
   transition: filter(0.2s);
 
-  &:hover {
+  &:disabled {
+    filter: brightness(0.5);
+  }
+  &:hover:not([disabled]) {
     filter: brightness(0.8);
   }
 }

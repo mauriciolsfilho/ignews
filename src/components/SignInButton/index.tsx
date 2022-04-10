@@ -1,14 +1,30 @@
 import styles from "./styles.module.scss";
 import { FaGithub } from "react-icons/fa";
 import { FiX } from "react-icons/fi";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export function SignInButton() {
-  const userLoggedIn = true;
+  const { data } = useSession();
+
+  console.log(data);
   return (
-    <button className={styles.signInButton} type="button">
-      <FaGithub color={userLoggedIn ? "#04D361" : "#EBA417"} />
-      {userLoggedIn ? "Mauricio Linhares" : "Sign in with github"}
-      {userLoggedIn && <FiX color="#737380" className={styles.closeIcon} />}
+    <button
+      className={styles.signInButton}
+      type="button"
+      onClick={() => (!data ? signIn("github") : signOut())}
+    >
+      {data ? (
+        <>
+          <img src={data.user.image} alt="Profile image" />
+          {data.user.name}
+        </>
+      ) : (
+        <>
+          <FaGithub color="#EBA417" />
+          Sign in with github
+        </>
+      )}
+      {data && <FiX color="#737380" className={styles.closeIcon} />}
     </button>
   );
 }
