@@ -1,0 +1,22 @@
+@import "../../styles/variables";
+
+.subscribeBtn {
+  width: 200px;
+  height: 3rem;
+  border: 0;
+  border-radius: 1rem;
+  background: $orange-500;
+  color: $gray-800;
+  font-size: 1.25rem;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: filter(0.2s);
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
