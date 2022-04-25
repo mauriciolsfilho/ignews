@@ -21,7 +21,16 @@ export async function saveSubscription(
 
   if (isCreate) {
     await fauna.query(
-      q.Create(q.Collection("subscriptions"), { data: subscription })
+      q.If(
+        q.Not(q.Exists(q.Match(q.Index("sub_by_id"), q.Casefold(subId)))),
+        q.Create(q.Collection("subscriptions"), { data: subscription }),
+        q.Replace(
+          q.Select("ref", q.Get(q.Match(q.Index("sub_by_id"), subId))),
+          {
+            data: subscription,
+          }
+        )
+      )
     );
   } else {
     await fauna.query(

@@ -16,7 +16,6 @@ async function buffer(readable: Readable) {
 
 const stripeEvents = new Set([
   "checkout.session.completed",
-  "customer.subscription.created",
   "customer.subscription.updated",
   "customer.subscription.deleted",
 ]);
@@ -44,17 +43,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       if (stripeEvents.has(event.type)) {
         try {
           switch (event.type) {
-            case "customer.subscription.created":
-              const subscription = event.data.object as Stripe.Subscription;
-
-              await saveSubscription(
-                subscription.id,
-                subscription.customer.toString(),
-                true
-              );
-              break;
             case "customer.subscription.updated":
-              break;
             case "customer.subscription.deleted":
               const sub = event.data.object as Stripe.Subscription;
 
