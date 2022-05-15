@@ -1,0 +1,70 @@
+@import "../../styles/variables";
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.post {
+  max-width: 780px;
+  margin: 5rem auto 0;
+
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+  }
+
+  time {
+    display: block;
+    color: $gray-300;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .content {
+    margin-top: 2rem;
+    line-height: 2rem;
+    font-size: 1.1rem;
+    color: $gray-100;
+
+    ul,
+    ol {
+      margin: 1.5rem 0;
+    }
+
+    ul,
+    ol {
+      padding-left: 1.5rem;
+
+      li {
+        margin: 0.5rem 0;
+      }
+    }
+
+    div,
+    iframe {
+      display: flex;
+      min-width: 520px;
+      min-height: 380px;
+      justify-content: center;
+
+      iframe {
+        border: 1px solid $white;
+        border-radius: 2rem;
+      }
+    }
+
+    p,
+    img {
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        border-radius: 2rem;
+        border: 1px solid $white;
+      }
+    }
+  }
+}
