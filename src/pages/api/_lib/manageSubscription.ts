@@ -35,7 +35,10 @@ export async function saveSubscription(
   } else {
     await fauna.query(
       q.Replace(q.Select("ref", q.Get(q.Match(q.Index("sub_by_id"), subId))), {
-        data: subscription,
+        data: {
+          ...subscription,
+          userId: userRef
+        },
       })
     );
   }

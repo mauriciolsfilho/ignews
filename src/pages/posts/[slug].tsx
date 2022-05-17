@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import * as prismic from "@prismicio/client";
 import { getPrismicClient } from "../../services/prismic";
 import { RichText } from "prismic-dom";
@@ -15,9 +15,10 @@ interface PostProps {
   updatedAt: string;
 }
 export default function Post(props: PostProps) {
+  const session = useSession();
   useEffect(() => {
+    console.log(session);
     if (props) {
-      console.log(props.content);
       document.getElementById("content-post").innerHTML = props.content;
     }
   }, []);

@@ -15,9 +15,10 @@ type StripeSessionPropos = {
   allow_promotion_codes: boolean;
 };
 export function SubscribeButton({ priceId }: { priceId: string }) {
-  const { data } = useSession();
+  const { data, status } = useSession();
 
   async function handleSubscribe() {
+    console.log(data, status);
     if (!data) {
       signIn("github");
       return;
