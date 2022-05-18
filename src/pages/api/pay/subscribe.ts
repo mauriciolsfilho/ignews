@@ -25,7 +25,6 @@ export default async function subscribe(
   const user: User = data.user;
   const priceId = data.priceId;
 
-  console.log(priceId);
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method not allowed");

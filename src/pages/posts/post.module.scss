@@ -28,6 +28,9 @@
     font-size: 1.1rem;
     color: $gray-100;
 
+    text-align: justify;
+    text-align-last: left;
+
     ul,
     ol {
       margin: 1.5rem 0;
@@ -42,6 +45,17 @@
       }
     }
 
+    // p {
+    //   & .block-img, img {
+    //     margin: 2rem 0;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     border-radius: 2rem;
+    //     border: 1px solid $white;
+    //   }
+    // }
+
     div,
     iframe {
       display: flex;
@@ -55,16 +69,10 @@
       }
     }
 
-    p,
-    img {
-      margin: 2rem 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      img {
-        border-radius: 2rem;
-        border: 1px solid $white;
-      }
+    &.previewContent {
+      background: linear-gradient($gray-100, transparent);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 }

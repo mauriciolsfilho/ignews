@@ -1,21 +1,22 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import { getSession, useSession } from "next-auth/react";
 import * as prismic from "@prismicio/client";
-import { getPrismicClient } from "../../services/prismic";
+import { getPrismicClient } from "../../../services/prismic";
 import { RichText } from "prismic-dom";
 import Head from "next/head";
 import { useEffect } from "react";
 
-import styles from "./post.module.scss";
+import styles from "../post.module.scss";
 
-interface PostProps {
+interface PostPreviewProps {
   slug: string;
   title: string;
   content: string;
   updatedAt: string;
 }
-export default function Post(props: PostProps) {
+export default function PostPreview(props: PostPreviewProps) {
   const session = useSession();
+
   useEffect(() => {
     if (props) {
       document.getElementById("content-post").innerHTML = props.content;
@@ -32,35 +33,33 @@ export default function Post(props: PostProps) {
           <h1>{props.title}</h1>
           <time>{props.updatedAt}</time>
 
-          <div id="content-post" className={styles.content}></div>
+          <div
+            id="content-post"
+            className={`${styles.content} ${styles.previewContent}`}
+          ></div>
         </article>
       </main>
     </>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-  params,
-}) => {
-  const session = await getSession({ req });
+export const getStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params;
 
-  if (!session?.activeSubscription) {
-    return {
-      redirect: {
-        destination: `/posts/preview/${slug}`,
-        permanent: false,
-      },
-    };
-  }
   const prismic = getPrismicClient();
   const response = await prismic.getByUID("post", String(slug), {});
 
   const post = {
     slug,
     title: RichText.asText(response.data.title),
-    content: RichText.asHtml(response.data.content).replace(
+    content: RichText.asHtml(response.data.content.splice(0, 4)).replace(
       " block-img",
       "block-img"
     ),

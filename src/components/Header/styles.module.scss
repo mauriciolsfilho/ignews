@@ -1,4 +1,4 @@
-@import '../../styles/variables';
+@import "../../styles/variables";
 
 .headerContainer {
   height: 5rem;
@@ -20,13 +20,13 @@
     a {
       display: inline-block;
       position: relative;
-      padding: 0 .5rem;
+      padding: 0 0.5rem;
       height: 5rem;
 
       line-height: 5rem;
       color: $gray-300;
 
-      transition: color .2s;
+      transition: color 0.2s;
 
       & + a {
         margin-left: 2rem;
@@ -40,7 +40,7 @@
       }
 
       &.active::after {
-        content: '';
+        content: "";
         height: 3px;
         border-radius: 3px 3px 0 0;
         width: 100%;
@@ -50,8 +50,6 @@
         background: $orange-500;
       }
     }
-
-    
   }
 
   button {
