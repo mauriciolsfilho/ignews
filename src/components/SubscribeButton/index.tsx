@@ -2,6 +2,7 @@ import styles from "./styles.module.scss";
 import { useSession, signIn } from "next-auth/react";
 import { api } from "../../services/api";
 import { getStripeJs } from "../../services/stripe-js";
+import { useRouter } from "next/router";
 
 type StripeSessionPropos = {
   id: string;
@@ -15,17 +16,21 @@ type StripeSessionPropos = {
   allow_promotion_codes: boolean;
 };
 export function SubscribeButton({ priceId }: { priceId: string }) {
-  const { data, status } = useSession();
+  const { data } = useSession();
+  const router = useRouter();
 
   async function handleSubscribe() {
-    console.log(data, status);
     if (!data) {
       signIn("github");
       return;
     }
 
+    if (data.activeSubscription) {
+      router.push("/posts");
+      return;
+    }
+
     try {
-      console.log(data);
       const { data: stripeSession } = await api.post<StripeSessionPropos>(
         "/pay/subscribe",
         {
@@ -46,7 +51,7 @@ export function SubscribeButton({ priceId }: { priceId: string }) {
       type="button"
       className={styles.subscribeBtn}
     >
-      Subscribe now
+      {data && data.activeSubscription ? "View posts" : "Subscribe now"}
     </button>
   );
 }
