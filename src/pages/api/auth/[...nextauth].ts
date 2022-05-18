@@ -20,7 +20,7 @@ export default NextAuth({
   callbacks: {
     async session({ session }) {
       try {
-        const userActiveSubscription = await fauna.query(
+        const activeSubscription = await fauna.query(
           q.Get(
             q.Intersection([
               q.Match(
@@ -35,13 +35,13 @@ export default NextAuth({
                   )
                 )
               ),
-              q.Match(q.Index("sub_by_status", "active")),
+              q.Match(q.Index("sub_by_status"), q.Casefold("active")),
             ])
           )
         );
         return {
           ...session,
-          activeSubscription: userActiveSubscription,
+          activeSubscription,
         };
       } catch {
         return {
