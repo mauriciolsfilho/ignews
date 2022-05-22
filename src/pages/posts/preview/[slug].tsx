@@ -7,6 +7,8 @@ import Head from "next/head";
 import { useEffect } from "react";
 
 import styles from "../post.module.scss";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface PostPreviewProps {
   slug: string;
@@ -15,13 +17,20 @@ interface PostPreviewProps {
   updatedAt: string;
 }
 export default function PostPreview(props: PostPreviewProps) {
-  const session = useSession();
+  const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (props) {
       document.getElementById("content-post").innerHTML = props.content;
     }
   }, []);
+
+  useEffect(() => {
+    if (session?.activeSubscription) {
+      router.push(`/posts/${props.slug}`);
+    }
+  }, [session]);
 
   return (
     <>
@@ -36,7 +45,13 @@ export default function PostPreview(props: PostPreviewProps) {
           <div
             id="content-post"
             className={`${styles.content} ${styles.previewContent}`}
-          ></div>
+          />
+          <div className={styles.readMore}>
+            Continuar lendo?
+            <Link href="/">
+              <a href="">Assinar agora 🙌</a>
+            </Link>
+          </div>
         </article>
       </main>
     </>
@@ -75,5 +90,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: post,
+    revalidate: 60 * 2, // 2 minutos
   };
 };
